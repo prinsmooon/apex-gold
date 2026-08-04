@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>APEX Gold Intelligence PRO — Claude AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A227; --gold2:#F0C855; --gold3:#7A6010; --gold4:#3D2F05;
+  --gbrd:rgba(201,162,39,.18); --gbrt:rgba(201,162,39,.40);
+  --bg:#04050A; --bg2:#090B14; --bg3:#0E1020; --bg4:#13162A;
+  --bull:#0ECB81; --bull2:rgba(14,203,129,.12);
+  --bear:#F6465D; --bear2:rgba(246,70,93,.12);
+  --blue:#4B8EFF; --blue2:rgba(75,142,255,.10);
+  --txt:#C8CDDF; --dim:#3E4260; --mute:#1A1D30;
+  --mono:'IBM Plex Mono',monospace; --ar:'Tajawal',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--ar);background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 45% at 8% 5%,rgba(201,162,39,.05) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 35% at 92% 95%,rgba(14,203,129,.03) 0%,transparent 50%),
+    radial-gradient(ellipse 30% 25% at 50% 50%,rgba(75,142,255,.02) 0%,transparent 60%);}
+
+/* ══ HEADER ══════════════════════════════════════════════════ */
+header{
+  position:sticky;top:0;z-index:300;
+  background:rgba(4,5,10,.96);backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--gbrd);
+  padding:10px 22px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo-icon{
+  width:38px;height:38px;border-radius:9px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold3));
+  display:flex;align-items:center;justify-content:center;font-size:19px;
+  box-shadow:0 0 20px rgba(201,162,39,.25);
+}
+.logo-text h1{font-size:12px;font-weight:900;color:var(--gold);letter-spacing:1.8px;}
+.logo-text p{font-size:8px;color:var(--dim);letter-spacing:.6px;margin-top:1px;}
+.ai-badge{
+  display:flex;align-items:center;gap:5px;
+  background:linear-gradient(90deg,rgba(75,142,255,.12),rgba(75,142,255,.06));
+  border:1px solid rgba(75,142,255,.2);border-radius:20px;
+  padding:3px 10px;font-size:9px;color:var(--blue);font-weight:700;
+  letter-spacing:.5px;
+}
+
+/* ══ TICKER ══════════════════════════════════════════════════ */
+.ticker-box{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1px solid var(--gbrd);
+  border-radius:8px;padding:7px 14px;
+}
+.tk-label{font-size:8px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;}
+.tk-price{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--gold);transition:color .2s;}
+.tk-chg{font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;}
+.chg-u{background:var(--bull2);color:var(--bull);}
+.chg-d{background:var(--bear2);color:var(--bear);}
+.chg-f{background:var(--mute);color:var(--dim);}
+
+/* ══ PRICE INPUT ══════════════════════════════════════════════ */
+.pin-wrap{
+  background:rgba(201,162,39,.07);border:1px solid var(--gbrt);
+  border-radius:8px;padding:7px 12px;display:flex;flex-direction:column;gap:3px;
+}
+.pin-lbl{font-size:8px;color:var(--gold);font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+.pin-row{display:flex;gap:6px;align-items:center;}
+.pin-input{
+  background:var(--bg3);border:1px solid var(--gbrd);border-radius:6px;
+  color:var(--gold2);font-family:var(--mono);font-size:15px;font-weight:700;
+  padding:5px 10px;width:130px;text-align:center;outline:none;
+  transition:border-color .2s;
+}
+.pin-input:focus{border-color:var(--gold);box-shadow:0 0 10px rgba(201,162,39,.15);}
+.pin-input::placeholder{color:var(--dim);font-size:10px;font-family:var(--ar);}
+.pin-btn{
+  background:var(--gold);color:#000;border:none;cursor:pointer;
+  padding:6px 12px;border-radius:6px;font-family:var(--ar);
+  font-size:12px;font-weight:700;transition:all .15s;white-space:nowrap;
+}
+.pin-btn:hover{background:var(--gold2);}
+
+/* ══ RIGHT ═══════════════════════════════════════════════════ */
+.hdr-right{display:flex;align-items:center;gap:10px;margin-right:auto;}
+.clk-time{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--txt);}
+.clk-date{font-size:8px;color:var(--dim);text-align:center;margin-top:1px;}
+.btn-run{
+  background:linear-gradient(135deg,var(--gold),#6B4E00);
+  color:#000;border:none;cursor:pointer;
+  padding:9px 18px;border-radius:8px;
+  font-family:var(--ar);font-size:13px;font-weight:700;
+  box-shadow:0 4px 16px rgba(201,162,39,.22);
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+  transition:all .2s;
+}
+.btn-run:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,162,39,.35);}
+.btn-run:disabled{opacity:.35;pointer-events:none;transform:none;}
+
+/* ══ WRAP ═════════════════════════════════════════════════════ */
+.wrap{position:relative;z-index:1;padding:16px 22px;max-width:1400px;margin:0 auto;}
+
+/* ══ STATUS ══════════════════════════════════════════════════ */
+.sbar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg2);border:1px solid var(--gbrd);
+  border-radius:8px;padding:9px 14px;margin-bottom:14px;font-size:10px;
+}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;animation:pu 2s infinite;}
+.dot.y{background:var(--gold);}
+.dot.g{background:var(--bull);}
+.dot.r{background:var(--bear);}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.2;transform:scale(2);}}
+
+/* ══ AI BANNER ═══════════════════════════════════════════════ */
+.ai-banner{
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(90deg,rgba(75,142,255,.07),rgba(75,142,255,.02));
+  border:1px solid rgba(75,142,255,.15);border-radius:8px;
+  padding:9px 14px;margin-bottom:14px;font-size:10px;color:var(--dim);
+}
+.ai-banner strong{color:var(--blue);}
+
+/* ══ ERROR ═══════════════════════════════════════════════════ */
+.errbox{
+  display:none;background:rgba(246,70,93,.06);
+  border:1px solid rgba(246,70,93,.22);border-radius:8px;
+  padding:11px 15px;margin-bottom:14px;font-size:10px;line-height:1.7;
+}
+.errbox.show{display:block;}
+.errbox strong{color:var(--bear);}
+
+/* ══ GRID HELPERS ════════════════════════════════════════════ */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.card{background:var(--bg2);border:1px solid var(--mute);border-radius:10px;transition:border-color .25s;}
+.card:hover{border-color:var(--gbrd);}
+.hidden{display:none!important;}
+.fade{opacity:0;transform:translateY(6px);animation:fu .38s ease forwards;}
+.d1{animation-delay:.04s;}.d2{animation-delay:.08s;}.d3{animation-delay:.12s;}
+.d4{animation-delay:.16s;}.d5{animation-delay:.20s;}
+@keyframes fu{to{opacity:1;transform:none;}}
+
+/* ══ CONTEXT CARDS ═══════════════════════════════════════════ */
+.ctx-card{padding:13px 15px;}
+.ctx-lbl{font-size:8px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
+.ctx-val{font-family:var(--mono);font-size:18px;font-weight:700;margin-bottom:2px;}
+.ctx-sub{font-size:9px;color:var(--dim);line-height:1.5;}
+
+/* ══ BIAS ════════════════════════════════════════════════════ */
+.bc{padding:14px;position:relative;overflow:hidden;}
+.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--mute);transition:background .4s;}
+.bc.bull{border-color:rgba(14,203,129,.22)!important;}
+.bc.bull::before{background:var(--bull);}
+.bc.bear{border-color:rgba(246,70,93,.22)!important;}
+.bc.bear::before{background:var(--bear);}
+.bc.neu{border-color:rgba(75,142,255,.18)!important;}
+.bc.neu::before{background:var(--blue);}
+.bc-lbl{font-size:8px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim);margin-bottom:7px;}
+.bc-val{font-size:22px;font-weight:900;line-height:1;margin-bottom:5px;}
+.bc-val.bull{color:var(--bull);}
+.bc-val.bear{color:var(--bear);}
+.bc-val.neu{color:var(--blue);}
+.bc-why{font-size:9px;color:var(--dim);line-height:1.6;margin-bottom:7px;min-height:30px;}
+.cbar{height:2px;background:var(--mute);border-radius:1px;overflow:hidden;margin-bottom:4px;}
+.cfill{height:100%;border-radius:1px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.cfill.bull{background:var(--bull);}
+.cfill.bear{background:var(--bear);}
+.cfill.neu{background:var(--blue);}
+.conf-n{font-family:var(--mono);font-size:8px;color:var(--dim);}
+
+/* ══ TRADE SETUP — BENTO STYLE ═══════════════════════════════ */
+.trade-wrap{margin-bottom:14px;}
+.trade-title{
+  font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:7px;
+}
+
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.setup-card{background:var(--bg2);border-radius:10px;overflow:hidden;}
+.setup-card.buy{border:1px solid rgba(14,203,129,.18);}
+.setup-card.sell{border:1px solid rgba(246,70,93,.18);}
+
+/* رأس البطاقة */
+.sh{
+  padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--mute);
+}
+.sh.buy{background:linear-gradient(90deg,rgba(14,203,129,.08),transparent);}
+.sh.sell{background:linear-gradient(90deg,rgba(246,70,93,.08),transparent);}
+.sh-title{font-size:15px;font-weight:900;display:flex;align-items:center;gap:7px;}
+.sh-title.buy{color:var(--bull);}
+.sh-title.sell{color:var(--bear);}
+.rr{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.rr.ok{background:var(--bull2);color:var(--bull);}
+.rr.gr{background:rgba(201,162,39,.12);color:var(--gold);}
+
+/* سبب الدخول */
+.why-bar{
+  margin:8px 14px;padding:8px 11px;
+  background:var(--bg3);border-radius:6px;
+  font-size:9px;color:var(--dim);line-height:1.6;
+  border-right:2px solid var(--blue);
+}
+.why-bar strong{color:var(--txt);}
+
+/* بطاقات الأسعار الكبيرة */
+.price-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--mute);
+  margin:0 0 0 0;
+}
+.price-cell{
+  background:var(--bg2);
+  padding:12px 14px;
+  display:flex;flex-direction:column;gap:3px;
+  transition:background .15s;cursor:default;
+}
+.price-cell:hover{background:var(--bg3);}
+.price-cell.full{grid-column:1/-1;}
+.pc-tag{
+  font-size:9px;font-weight:900;letter-spacing:.6px;
+  padding:3px 8px;border-radius:5px;
+  display:inline-flex;align-items:center;gap:4px;
+  width:fit-content;
+}
+.pc-tag.entry{background:rgba(75,142,255,.14);color:var(--blue);border:1px solid rgba(75,142,255,.22);}
+.pc-tag.sl{background:rgba(246,70,93,.14);color:var(--bear);border:1px solid rgba(246,70,93,.22);}
+.pc-tag.tp1{background:rgba(14,203,129,.10);color:var(--bull);border:1px solid rgba(14,203,129,.2);}
+.pc-tag.tp2{background:rgba(14,203,129,.18);color:#0ECB81;border:1px solid rgba(14,203,129,.3);}
+.pc-tag.tp3{background:rgba(201,162,39,.12);color:var(--gold);border:1px solid rgba(201,162,39,.22);}
+.pc-name{font-size:9px;color:var(--dim);}
+.pc-price{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:.5px;
+  line-height:1;
+}
+.pc-price.entry{color:var(--blue);}
+.pc-price.sl{color:var(--bear);}
+.pc-price.tp1{color:var(--bull);}
+.pc-price.tp2{color:#1EE88E;}
+.pc-price.tp3{color:var(--gold);}
+.pc-diff{
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  padding:2px 7px;border-radius:3px;width:fit-content;
+}
+.pd-sl{background:var(--bear2);color:var(--bear);}
+.pd-tp{background:var(--bull2);color:var(--bull);}
+.pd-e{background:var(--blue2);color:var(--blue);}
+
+/* ══ KEY LEVELS ══════════════════════════════════════════════ */
+.kl-card{padding:14px;}
+.kl-title{font-size:8px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.kl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 9px;border-radius:5px;margin-bottom:3px;
+  transition:background .12s;cursor:default;
+}
+.kl-row:hover{background:var(--bg3);}
+.kl-name{font-size:9px;color:var(--dim);}
+.kl-price{font-family:var(--mono);font-size:13px;font-weight:700;}
+.kl-str{font-size:8px;font-weight:700;padding:1px 6px;border-radius:3px;}
+.ks-s{background:rgba(201,162,39,.11);color:var(--gold);}
+.ks-m{background:var(--blue2);color:var(--blue);}
+.ks-w{background:var(--mute);color:var(--dim);}
+
+/* ══ SESSIONS ════════════════════════════════════════════════ */
+.sess-card{
+  padding:11px 13px;display:flex;align-items:center;gap:9px;
+  transition:all .3s;
+}
+.sess-card.hot{border-color:var(--gbrt)!important;background:linear-gradient(135deg,rgba(201,162,39,.07),var(--bg2));}
+.sess-card.open{border-color:rgba(14,203,129,.2)!important;}
+.sess-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.si-as{background:rgba(201,162,39,.07);}
+.si-lo{background:rgba(75,142,255,.09);}
+.si-ny{background:rgba(14,203,129,.09);}
+.sess-info h4{font-size:11px;font-weight:700;margin-bottom:2px;}
+.sess-info p{font-size:8px;color:var(--dim);}
+.sess-badge{font-size:8px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:20px;margin-right:auto;white-space:nowrap;}
+.sb-hot{background:rgba(201,162,39,.14);color:var(--gold);}
+.sb-open{background:var(--bull2);color:var(--bull);}
+.sb-soon{background:var(--blue2);color:var(--blue);}
+.sb-cl{background:var(--mute);color:var(--dim);}
+
+/* ══ SCENARIOS ═══════════════════════════════════════════════ */
+.scen-body{padding:15px;}
+.scen-title{font-size:8px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+.scen-item{
+  background:var(--bg3);border-radius:7px;
+  padding:12px 13px;margin-bottom:8px;
+  border-right:3px solid var(--mute);
+}
+.scen-item:last-child{margin-bottom:0;}
+.scen-item.bull{border-right-color:var(--bull);}
+.scen-item.bear{border-right-color:var(--bear);}
+.scen-item.alt{border-right-color:var(--blue);}
+.si-hdr{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.si-name{font-size:11px;font-weight:700;}
+.si-prob{font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;margin-right:auto;}
+.sp-h{background:var(--bull2);color:var(--bull);}
+.sp-m{background:rgba(201,162,39,.09);color:var(--gold);}
+.sp-l{background:var(--bear2);color:var(--bear);}
+.si-txt{font-size:10px;color:var(--dim);line-height:1.85;}
+.si-txt strong{color:var(--txt);font-weight:600;}
+
+/* ══ RECOMMENDATION BOX ══════════════════════════════════════ */
+.rec-box{
+  border-radius:10px;padding:16px 18px;margin-bottom:14px;
+  border:1px solid var(--mute);
+}
+.rec-box.buy-rec{
+  background:linear-gradient(135deg,rgba(14,203,129,.07),rgba(14,203,129,.02));
+  border-color:rgba(14,203,129,.25);
+}
+.rec-box.sell-rec{
+  background:linear-gradient(135deg,rgba(246,70,93,.07),rgba(246,70,93,.02));
+  border-color:rgba(246,70,93,.25);
+}
+.rec-box.wait-rec{
+  background:linear-gradient(135deg,rgba(75,142,255,.06),rgba(75,142,255,.02));
+  border-color:rgba(75,142,255,.2);
+}
+.rec-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.rec-icon{font-size:22px;}
+.rec-main{font-size:16px;font-weight:900;}
+.rec-main.buy{color:var(--bull);}
+.rec-main.sell{color:var(--bear);}
+.rec-main.wait{color:var(--blue);}
+.rec-conf{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-right:auto;}
+.rec-txt{font-size:11px;color:var(--dim);line-height:1.8;}
+.rec-txt strong{color:var(--txt);}
+
+/* ══ LOADING ══════════════════════════════════════════════════ */
+#lov{
+  position:fixed;inset:0;
+  background:rgba(4,5,10,.95);backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  z-index:999;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+#lov.show{opacity:1;pointer-events:all;}
+.sp{
+  width:48px;height:48px;border-radius:50%;
+  border:2px solid var(--mute);border-top-color:var(--gold);
+  animation:spin .75s linear infinite;margin-bottom:10px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.lov-ttl{font-size:13px;color:var(--txt);text-align:center;margin-bottom:4px;}
+.lov-steps{display:flex;flex-direction:column;gap:5px;min-width:300px;}
+.lstep{font-family:var(--mono);font-size:9px;padding:2px 0;transition:color .3s;}
+.lstep.done{color:var(--bull);}
+.lstep.active{color:var(--gold);}
+.lstep.wait{color:var(--mute);}
+
+.disc{
+  background:rgba(246,70,93,.04);border:1px solid rgba(246,70,93,.10);
+  border-radius:7px;padding:9px 13px;font-size:9px;color:var(--dim);
+  line-height:1.7;margin-top:12px;
+}
+.disc strong{color:var(--bear);}
+</style>
+</head>
+<body>
+
+<div id="lov">
+  <div>
+    <div class="sp"></div>
+    <div class="lov-ttl" id="lovT">🤖 Claude AI يحلل السوق...</div>
+    <div class="lov-steps" id="lovS"></div>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🥇</div>
+    <div class="logo-text">
+      <h1>APEX GOLD INTELLIGENCE PRO</h1>
+      <p>تحليل احترافي حقيقي بـ Claude AI — XAU/USD</p>
+    </div>
+  </div>
+  <div class="ai-badge">🤖 Claude Sonnet · AI حقيقي</div>
+
+  <div class="ticker-box">
+    <div>
+      <div class="tk-label">XAU / USD</div>
+      <div class="tk-price" id="tkp">----.-</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3px;">
+      <div class="tk-chg chg-f" id="tkc">—</div>
+    </div>
+  </div>
+
+  <div class="pin-wrap">
+    <div class="pin-lbl">📍 سعر MT5</div>
+    <div class="pin-row">
+      <input type="number" id="pinF" class="pin-input"
+             placeholder="مثال: 3245.50"
+             step="0.01" min="1000" max="20000"
+             onkeydown="if(event.key==='Enter') setPrice()"/>
+      <button class="pin-btn" onclick="setPrice()">✓ تأكيد</button>
+    </div>
+  </div>
+
+  <div class="hdr-right">
+    <div>
+      <div class="clk-time" id="ct">--:--:--</div>
+      <div class="clk-date" id="cd">— GMT</div>
+    </div>
+    <button class="btn-run" id="btnRun" onclick="runAnalysis()">
+      🤖 تحليل AI الآن
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="sbar">
+    <div class="dot y" id="dot"></div>
+    <span id="stxt">أدخل سعر XAU/USD من MT5 ← اضغط تأكيد ← اضغط تحليل AI</span>
+  </div>
+
+  <div class="ai-banner">
+    <span>🤖</span>
+    <span id="aib">
+      <strong>Claude AI الحقيقي</strong> يحلل السعر كخبير فني متخصص ← يعطيك:
+      توصية واضحة (شراء/بيع/انتظار) + سبب + دخول + SL + TP1/TP2/TP3 + سيناريوهات
+    </span>
+  </div>
+
+  <div class="errbox" id="errbox">
+    <strong>⚠️ خطأ:</strong> <span id="errmsg">—</span>
+  </div>
+
+  <!-- التوصية الرئيسية -->
+  <div id="sRec" class="hidden"></div>
+
+  <!-- السياق -->
+  <div class="g4 hidden" id="sCtx">
+    <div class="card ctx-card fade d1">
+      <div class="ctx-lbl">السعر المحلّل</div>
+      <div class="ctx-val" id="cP">—</div>
+      <div class="ctx-sub" id="cPs">—</div>
+    </div>
+    <div class="card ctx-card fade d2">
+      <div class="ctx-lbl">النطاق اليومي</div>
+      <div class="ctx-val" id="cR">—</div>
+      <div class="ctx-sub" id="cRs">—</div>
+    </div>
+    <div class="card ctx-card fade d3">
+      <div class="ctx-lbl">ATR تقديري H1</div>
+      <div class="ctx-val" id="cA">—</div>
+      <div class="ctx-sub" id="cAs">—</div>
+    </div>
+    <div class="card ctx-card fade d4">
+      <div class="ctx-lbl">RSI 14 تقديري</div>
+      <div class="ctx-val" id="cRsi">—</div>
+      <div class="ctx-sub" id="cRsS">—</div>
+    </div>
+  </div>
+
+  <!-- التحيز -->
+  <div class="g3 hidden" id="sBias">
+    <div class="card bc fade d1" id="bcD1">
+      <div class="bc-lbl">📅 التحيز اليومي D1</div>
+      <div class="bc-val" id="bD1v">—</div>
+      <div class="bc-why" id="bD1w">—</div>
+      <div class="cbar"><div class="cfill" id="bD1f"></div></div>
+      <div class="conf-n">الثقة: <span id="bD1c">—</span></div>
+    </div>
+    <div class="card bc fade d2" id="bcH4">
+      <div class="bc-lbl">🕓 الاتجاه H4</div>
+      <div class="bc-val" id="bH4v">—</div>
+      <div class="bc-why" id="bH4w">—</div>
+      <div class="cbar"><div class="cfill" id="bH4f"></div></div>
+      <div class="conf-n">الثقة: <span id="bH4c">—</span></div>
+    </div>
+    <div class="card bc fade d3" id="bcH1">
+      <div class="bc-lbl">🕐 الزخم H1</div>
+      <div class="bc-val" id="bH1v">—</div>
+      <div class="bc-why" id="bH1w">—</div>
+      <div class="cbar"><div class="cfill" id="bH1f"></div></div>
+      <div class="conf-n">الثقة: <span id="bH1c">—</span></div>
+    </div>
+  </div>
+
+  <!-- إعدادات التداول -->
+  <div class="trade-wrap hidden" id="sTrade">
+    <div class="trade-title">
+      <span>⚡</span> إعدادات التداول — نقاط الدخول والخروج
+    </div>
+    <div class="setup-grid">
+
+      <!-- BUY -->
+      <div class="setup-card buy">
+        <div class="sh buy">
+          <div class="sh-title buy">🔼 إعداد الشراء</div>
+          <div class="rr" id="bRR">—</div>
+        </div>
+        <div class="why-bar" id="bWhy">—</div>
+        <div class="price-grid">
+          <!-- دخول - عرض كامل -->
+          <div class="price-cell full">
+            <div class="pc-tag entry">🎯 دخول</div>
+            <div class="pc-name">منطقة الدخول: <span id="bEZ" style="color:var(--blue)">—</span></div>
+            <div class="pc-price entry" id="bE">—</div>
+            <div class="pc-diff pd-e">سعر الدخول المقترح</div>
+          </div>
+          <!-- SL -->
+          <div class="price-cell">
+            <div class="pc-tag sl">🛑 SL</div>
+            <div class="pc-name">وقف الخسارة</div>
+            <div class="pc-price sl" id="bSL">—</div>
+            <div class="pc-diff pd-sl" id="bSLD">—</div>
+          </div>
+          <!-- TP1 -->
+          <div class="price-cell">
+            <div class="pc-tag tp1">✅ TP 1</div>
+            <div class="pc-name">جني أول — 30%</div>
+            <div class="pc-price tp1" id="bT1">—</div>
+            <div class="pc-diff pd-tp" id="bT1D">—</div>
+          </div>
+          <!-- TP2 -->
+          <div class="price-cell">
+            <div class="pc-tag tp2">🎯 TP 2</div>
+            <div class="pc-name">الهدف الرئيسي — 50%</div>
+            <div class="pc-price tp2" id="bT2">—</div>
+            <div class="pc-diff pd-tp" id="bT2D">—</div>
+          </div>
+          <!-- TP3 -->
+          <div class="price-cell">
+            <div class="pc-tag tp3">🏆 TP 3</div>
+            <div class="pc-name">الهدف الممتد — 20%</div>
+            <div class="pc-price tp3" id="bT3">—</div>
+            <div class="pc-diff pd-tp" id="bT3D">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SELL -->
+      <div class="setup-card sell">
+        <div class="sh sell">
+          <div class="sh-title sell">🔽 إعداد البيع</div>
+          <div class="rr" id="sRR">—</div>
+        </div>
+        <div class="why-bar" id="sWhy">—</div>
+        <div class="price-grid">
+          <!-- دخول -->
+          <div class="price-cell full">
+            <div class="pc-tag entry">🎯 دخول</div>
+            <div class="pc-name">منطقة الدخول: <span id="sEZ" style="color:var(--blue)">—</span></div>
+            <div class="pc-price entry" id="sE">—</div>
+            <div class="pc-diff pd-e">سعر الدخول المقترح</div>
+          </div>
+          <!-- SL -->
+          <div class="price-cell">
+            <div class="pc-tag sl">🛑 SL</div>
+            <div class="pc-name">وقف الخسارة</div>
+            <div class="pc-price sl" id="sSL">—</div>
+            <div class="pc-diff pd-sl" id="sSLD">—</div>
+          </div>
+          <!-- TP1 -->
+          <div class="price-cell">
+            <div class="pc-tag tp1">✅ TP 1</div>
+            <div class="pc-name">جني أول — 30%</div>
+            <div class="pc-price tp1" id="sT1">—</div>
+            <div class="pc-diff pd-tp" id="sT1D">—</div>
+          </div>
+          <!-- TP2 -->
+          <div class="price-cell">
+            <div class="pc-tag tp2">🎯 TP 2</div>
+            <div class="pc-name">الهدف الرئيسي — 50%</div>
+            <div class="pc-price tp2" id="sT2">—</div>
+            <div class="pc-diff pd-tp" id="sT2D">—</div>
+          </div>
+          <!-- TP3 -->
+          <div class="price-cell">
+            <div class="pc-tag tp3">🏆 TP 3</div>
+            <div class="pc-name">الهدف الممتد — 20%</div>
+            <div class="pc-price tp3" id="sT3">—</div>
+            <div class="pc-diff pd-tp" id="sT3D">—</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- المستويات + الجلسات -->
+  <div class="g2 hidden" id="sKL">
+    <div class="card kl-card fade d3">
+      <div class="kl-title">🔴 مستويات المقاومة</div>
+      <div id="resD"></div>
+    </div>
+    <div class="card kl-card fade d4">
+      <div class="kl-title">🟢 مستويات الدعم</div>
+      <div id="supD"></div>
+    </div>
+  </div>
+
+  <div class="g3 hidden" id="sSess">
+    <div class="card sess-card" id="scAs">
+      <div class="sess-icon si-as">🌏</div>
+      <div class="sess-info"><h4>آسيا</h4><p>00:00–07:00 GMT</p></div>
+      <div class="sess-badge" id="sbAs">—</div>
+    </div>
+    <div class="card sess-card" id="scLo">
+      <div class="sess-icon si-lo">🏛️</div>
+      <div class="sess-info"><h4>لندن 🔥</h4><p>08:00–17:00 GMT</p></div>
+      <div class="sess-badge" id="sbLo">—</div>
+    </div>
+    <div class="card sess-card" id="scNY">
+      <div class="sess-icon si-ny">🗽</div>
+      <div class="sess-info"><h4>نيويورك</h4><p>13:00–22:00 GMT</p></div>
+      <div class="sess-badge" id="sbNY">—</div>
+    </div>
+  </div>
+
+  <!-- السيناريوهات -->
+  <div class="card hidden fade d5" id="sScen">
+    <div class="scen-body">
+      <div class="scen-title">🎯 السيناريوهات المحتملة — تحليل Claude AI الاحترافي</div>
+      <div id="scenD"></div>
+    </div>
+  </div>
+
+  <div class="disc">
+    <strong>⚠️ إفصاح:</strong> التحليل يُنتج بواسطة Claude AI بناءً على السعر الذي تُدخله وبيانات السوق العامة.
+    هذا <strong>تحليل فني استرشادي</strong> وليس توصية استثمار.
+    تحقق دائماً من الشارت الحقيقي في MT5 قبل أي قرار. التداول ينطوي على مخاطر.
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  APEX GOLD INTELLIGENCE PRO — Claude AI Real Analysis
+// ═══════════════════════════════════════════════════════════════
+
+let PRICE = 0, PREV = 0, READY = false;
+const $ = id => document.getElementById(id);
+const h = (id, v) => { const e=$(id); if(e) e.innerHTML=v; };
+const f2 = v => parseFloat(v).toFixed(2);
+const z  = n => String(n).padStart(2,'0');
+const sl = ms => new Promise(r => setTimeout(r, ms));
+
+// ── ساعة ─────────────────────────────────────────────────────
+function clock() {
+  const n = new Date();
+  $('ct').textContent = `${z(n.getUTCHours())}:${z(n.getUTCMinutes())}:${z(n.getUTCSeconds())}`;
+  const D=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const M=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  $('cd').textContent = `${D[n.getDay()]} ${n.getDate()} ${M[n.getMonth()]} ${n.getFullYear()} GMT`;
+}
+
+// ── تحديث السعر ──────────────────────────────────────────────
+function showPrice() {
+  const pe = $('tkp');
+  if (!pe || PRICE <= 0) return;
+  pe.textContent = PRICE.toFixed(2);
+  const diff = PRICE - PREV;
+  const ce = $('tkc');
+  if (Math.abs(diff) < 0.3 || PREV === 0) {
+    ce.className='tk-chg chg-f'; ce.textContent='—';
+  } else if (diff > 0) {
+    pe.style.color='var(--bull)'; ce.className='tk-chg chg-u';
+    ce.textContent=`▲ ${diff.toFixed(2)}`;
+    setTimeout(()=>pe.style.color='var(--gold)',600);
+  } else {
+    pe.style.color='var(--bear)'; ce.className='tk-chg chg-d';
+    ce.textContent=`▼ ${Math.abs(diff).toFixed(2)}`;
+    setTimeout(()=>pe.style.color='var(--gold)',600);
+  }
+}
+
+// ── تأكيد السعر ──────────────────────────────────────────────
+function setPrice() {
+  const v = parseFloat($('pinF').value);
+  if (!v || v < 1000 || v > 20000) {
+    $('pinF').style.borderColor='var(--bear)';
+    $('pinF').placeholder='⚠️ سعر غير صحيح';
+    setTimeout(()=>{ $('pinF').style.borderColor=''; $('pinF').placeholder='مثال: 3245.50'; }, 2500);
+    return;
+  }
+  PREV = PRICE > 0 ? PRICE : v;
+  PRICE = v;
+  showPrice();
+  $('pinF').style.borderColor='var(--bull)';
+  setTimeout(()=>$('pinF').style.borderColor='', 900);
+  h('stxt', `✅ السعر ${PRICE.toFixed(2)}$ — اضغط "تحليل AI الآن"`);
+  $('dot').className='dot g';
+  $('errbox').classList.remove('show');
+}
+
+// ── خطوات التحميل ────────────────────────────────────────────
+const STEPS = [
+  'التحقق من السعر وجمع بيانات السوق...',
+  'تحليل السياق الاقتصادي الحالي...',
+  'إرسال الطلب لـ Claude AI...',
+  'Claude يقرأ مستويات الدعم والمقاومة...',
+  'Claude يحدد التحيز D1 / H4 / H1...',
+  'Claude يحسب نقاط الدخول والخروج...',
+  'Claude يبني التوصية النهائية...',
+  'Claude يكتب السيناريوهات...',
+  'تنسيق التقرير النهائي...',
+];
+function showSteps(a) {
+  $('lovS').innerHTML = STEPS.map((s,i)=>`
+    <div class="lstep ${i<a?'done':i===a?'active':'wait'}">
+      ${i<a?'✓':i===a?'▶':'○'} ${s}
+    </div>`).join('');
+}
+
+// ── Claude API ───────────────────────────────────────────────
+async function callClaude(price) {
+  const now = new Date();
+  const date = `${now.getUTCDate()}/${now.getUTCMonth()+1}/${now.getUTCFullYear()}`;
+  const time = `${z(now.getUTCHours())}:${z(now.getUTCMinutes())} GMT`;
+  const hm   = now.getUTCHours()*60+now.getUTCMinutes();
+  const sess =
+    hm>=480&&hm<630  ? 'London Open Kill Zone — أفضل وقت' :
+    hm>=780&&hm<960  ? 'New York Kill Zone — وقت ممتاز' :
+    hm>=630&&hm<1020 ? 'جلسة لندن نشطة' :
+    hm>=960&&hm<1320 ? 'جلسة نيويورك نشطة' :
+    hm>=0  &&hm<420  ? 'جلسة آسيا — هادئة للذهب' : 'خارج الجلسات الرئيسية';
+
+  const prompt = `أنت كبير محللي الذهب XAU/USD في صندوق تحوط كبير، خبرة 20 سنة في SMC/ICT.
+
+المعطيات:
+- السعر الحالي: $${price.toFixed(2)}
+- التاريخ: ${date} | الوقت: ${time}
+- الجلسة: ${sess}
+- السياق: الذهب في اتجاه صاعد كبير منذ 2024، يتداول حول قممه التاريخية
+
+مهمتك: أعطني تحليلاً احترافياً دقيقاً بتنسيق JSON فقط، بدون أي نص خارج الـ JSON:
+
+{
+  "recommendation": {
+    "action": "<BUY أو SELL أو WAIT>",
+    "strength": "<قوية جداً / قوية / متوسطة / ضعيفة>",
+    "confidence": <50-95>,
+    "main_reason": "<السبب الرئيسي في جملة واحدة دقيقة>",
+    "full_analysis": "<تحليل كامل 3-4 جمل: لماذا هذه التوصية الآن، ما الذي يدعمها، ما المخاطر>"
+  },
+  "market_context": {
+    "day_low": <قاع اليوم المتوقع>,
+    "day_high": <قمة اليوم المتوقعة>,
+    "atr_h1": <ATR تقديري لـ H1 بالدولار، للذهب عادة 15-35$>,
+    "rsi_14": <RSI تقديري 14 فترة>,
+    "rsi_label": "<Oversold / محايد / Overbought>",
+    "volatility": "<منخفضة / متوسطة / عالية>",
+    "market_phase": "<تراكم / صعود / توزيع / هبوط / تذبذب>"
+  },
+  "bias": {
+    "D1": {
+      "direction": "<صاعد / هابط / محايد>",
+      "analysis": "<تحليل D1 دقيق: ما الذي يقوله الإطار اليومي>",
+      "confidence": <60-92>
+    },
+    "H4": {
+      "direction": "<صاعد / هابط / محايد>",
+      "analysis": "<تحليل H4: البنية الحالية والزخم>",
+      "confidence": <55-88>
+    },
+    "H1": {
+      "direction": "<صاعد / هابط / محايد>",
+      "analysis": "<تحليل H1: الزخم الحالي وإشارات الدخول>",
+      "confidence": <50-85>
+    }
+  },
+  "buy_setup": {
+    "entry": <سعر الدخول للشراء>,
+    "entry_zone": "<نطاق الدخول مثال: 3235-3245>",
+    "stop_loss": <وقف الخسارة>,
+    "tp1": <هدف 1>,
+    "tp2": <هدف 2>,
+    "tp3": <هدف 3>,
+    "risk_reward": <نسبة R:R لـTP2 عشري>,
+    "entry_reason": "<لماذا هذا الدخول تحديداً — سبب فني دقيق>"
+  },
+  "sell_setup": {
+    "entry": <سعر الدخول للبيع>,
+    "entry_zone": "<نطاق>",
+    "stop_loss": <وقف الخسارة>,
+    "tp1": <هدف 1>,
+    "tp2": <هدف 2>,
+    "tp3": <هدف 3>,
+    "risk_reward": <نسبة R:R>,
+    "entry_reason": "<سبب فني دقيق>"
+  },
+  "key_levels": {
+    "resistance": [
+      {"price": <رقم>, "label": "<اسم المستوى>", "strength": "<قوية/متوسطة/ضعيفة>", "note": "<ملاحظة>"},
+      {"price": <رقم>, "label": "<اسم>", "strength": "<قوية/متوسطة/ضعيفة>", "note": "<ملاحظة>"},
+      {"price": <رقم>, "label": "<اسم>", "strength": "<قوية/متوسطة/ضعيفة>", "note": "<ملاحظة>"}
+    ],
+    "support": [
+      {"price": <رقم>, "label": "<اسم>", "strength": "<قوي/متوسط/ضعيف>", "note": "<ملاحظة>"},
+      {"price": <رقم>, "label": "<اسم>", "strength": "<قوي/متوسط/ضعيف>", "note": "<ملاحظة>"},
+      {"price": <رقم>, "label": "<اسم>", "strength": "<قوي/متوسط/ضعيف>", "note": "<ملاحظة>"}
+    ]
+  },
+  "scenarios": {
+    "bullish": {
+      "probability": <احتمال %>,
+      "trigger": "<ما يجب أن يحدث لتفعيل هذا السيناريو>",
+      "target": "<الهدف السعري>",
+      "description": "<وصف تفصيلي 2-3 جمل>"
+    },
+    "bearish": {
+      "probability": <احتمال %>,
+      "trigger": "<ما يفعّل السيناريو الهابط>",
+      "target": "<الهدف>",
+      "description": "<وصف>"
+    },
+    "neutral": {
+      "probability": <الباقي %>,
+      "trigger": "<شرط التذبذب>",
+      "target": "<النطاق>",
+      "description": "<وصف>"
+    }
+  },
+  "best_entry_time": "<أفضل وقت للدخول اليوم مع السبب>",
+  "risk_warning": "<تحذير مخاطر محدد لهذه الصفقة>"
+}`;
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2500,
+      messages: [{ role:'user', content: prompt }]
+    })
+  });
+
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`Claude API ${resp.status}: ${err.substring(0,150)}`);
+  }
+
+  const data = await resp.json();
+  const raw  = data.content.map(b => b.type==='text' ? b.text : '').join('');
+  const clean = raw.replace(/```json\s*/gi,'').replace(/```/g,'').trim();
+  return JSON.parse(clean);
+}
+
+// ── عرض التقرير ─────────────────────────────────────────────
+function renderReport(d, price) {
+  const rec = d.recommendation;
+  const ctx = d.market_context;
+  const b   = d.buy_setup;
+  const s   = d.sell_setup;
+
+  // ─ التوصية الرئيسية
+  const isB = rec.action === 'BUY';
+  const isSl = rec.action === 'SELL';
+  const recCls = isB ? 'buy-rec' : isSl ? 'sell-rec' : 'wait-rec';
+  const recIcon = isB ? '🔼' : isSl ? '🔽' : '⏸️';
+  const recLbl  = isB ? 'شراء' : isSl ? 'بيع' : 'انتظار';
+  const recClr  = isB ? 'buy' : isSl ? 'sell' : 'wait';
+  const confClr = rec.confidence >= 75 ? 'sp-h' : rec.confidence >= 60 ? 'sp-m' : 'sp-l';
+
+  $('sRec').className = `rec-box ${recCls} fade`;
+  $('sRec').innerHTML = `
+    <div class="rec-header">
+      <div class="rec-icon">${recIcon}</div>
+      <div>
+        <div class="rec-main ${recClr}">التوصية: ${recLbl} — ${rec.strength}</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:2px;">${rec.main_reason}</div>
+      </div>
+      <div class="rec-conf ${confClr}">الثقة ${rec.confidence}%</div>
+    </div>
+    <div class="rec-txt">${rec.full_analysis}</div>
+    <div style="margin-top:8px;font-size:9px;color:var(--bear);padding:6px 10px;background:rgba(246,70,93,.06);border-radius:5px;">
+      ⚠️ ${d.risk_warning}
+    </div>`;
+
+  // ─ السياق
+  h('cP',  `${price.toFixed(2)}$`);
+  h('cPs', `${ctx.market_phase} | تذبذب: ${ctx.volatility}`);
+  h('cR',  `${f2(ctx.day_low)} – ${f2(ctx.day_high)}`);
+  h('cRs', `نطاق يومي متوقع: ${(ctx.day_high-ctx.day_low).toFixed(0)}$`);
+  h('cA',  `~${ctx.atr_h1}$`);
+  h('cAs', 'متوسط تذبذب H1');
+  h('cRsi', `${ctx.rsi_14}`);
+  h('cRsS', ctx.rsi_label);
+
+  // ─ التحيز
+  function setBias(cid,vid,wid,fid,ccid, dir, why, conf) {
+    const cl = dir==='صاعد'?'bull': dir==='هابط'?'bear':'neu';
+    const sym = dir==='صاعد'?'▲ صاعد': dir==='هابط'?'▼ هابط':'↔ محايد';
+    $(cid).className = `card bc fade ${cl}`;
+    const v=$(vid); v.textContent=sym; v.className=`bc-val ${cl}`;
+    h(wid, why);
+    const f=$(fid); f.className=`cfill ${cl}`;
+    setTimeout(()=>f.style.width=conf+'%', 200);
+    h(ccid, conf+'%');
+  }
+  setBias('bcD1','bD1v','bD1w','bD1f','bD1c', d.bias.D1.direction, d.bias.D1.analysis, d.bias.D1.confidence);
+  setBias('bcH4','bH4v','bH4w','bH4f','bH4c', d.bias.H4.direction, d.bias.H4.analysis, d.bias.H4.confidence);
+  setBias('bcH1','bH1v','bH1w','bH1f','bH1c', d.bias.H1.direction, d.bias.H1.analysis, d.bias.H1.confidence);
+
+  // ─ الشراء
+  h('bE',   f2(b.entry));
+  h('bEZ',  b.entry_zone);
+  h('bSL',  f2(b.stop_loss));
+  h('bSLD', `−$${(b.entry - b.stop_loss).toFixed(1)}`);
+  h('bT1',  f2(b.tp1));
+  h('bT1D', `+$${(b.tp1 - b.entry).toFixed(1)}`);
+  h('bT2',  f2(b.tp2));
+  h('bT2D', `+$${(b.tp2 - b.entry).toFixed(1)}`);
+  h('bT3',  f2(b.tp3));
+  h('bT3D', `+$${(b.tp3 - b.entry).toFixed(1)}`);
+  const bRR = $('bRR');
+  bRR.textContent = `⚖️ R:R 1:${parseFloat(b.risk_reward).toFixed(1)}`;
+  bRR.className = `rr ${b.risk_reward>=2.5?'gr':'ok'}`;
+  h('bWhy', `<strong>📍 سبب الدخول:</strong> ${b.entry_reason}`);
+
+  // ─ البيع
+  h('sE',   f2(s.entry));
+  h('sEZ',  s.entry_zone);
+  h('sSL',  f2(s.stop_loss));
+  h('sSLD', `+$${(s.stop_loss - s.entry).toFixed(1)}`);
+  h('sT1',  f2(s.tp1));
+  h('sT1D', `-$${(s.entry - s.tp1).toFixed(1)}`);
+  h('sT2',  f2(s.tp2));
+  h('sT2D', `-$${(s.entry - s.tp2).toFixed(1)}`);
+  h('sT3',  f2(s.tp3));
+  h('sT3D', `-$${(s.entry - s.tp3).toFixed(1)}`);
+  const sRR = $('sRR');
+  sRR.textContent = `⚖️ R:R 1:${parseFloat(s.risk_reward).toFixed(1)}`;
+  sRR.className = `rr ${s.risk_reward>=2.5?'gr':'ok'}`;
+  h('sWhy', `<strong>📍 سبب الدخول:</strong> ${s.entry_reason}`);
+
+  // ─ المستويات
+  $('resD').innerHTML = d.key_levels.resistance.map((r,i)=>`
+    <div class="kl-row">
+      <span class="kl-name">${r.label}</span>
+      <span class="kl-price" style="color:var(--bear)">${f2(r.price)}</span>
+      <span class="kl-str ${i===0?'ks-s':i===1?'ks-m':'ks-w'}">${r.strength}</span>
+    </div>
+    <div style="font-size:8px;color:var(--dim);padding:0 9px 6px;">${r.note}</div>`).join('');
+
+  $('supD').innerHTML = d.key_levels.support.map((s2,i)=>`
+    <div class="kl-row">
+      <span class="kl-name">${s2.label}</span>
+      <span class="kl-price" style="color:var(--bull)">${f2(s2.price)}</span>
+      <span class="kl-str ${i===0?'ks-s':i===1?'ks-m':'ks-w'}">${s2.strength}</span>
+    </div>
+    <div style="font-size:8px;color:var(--dim);padding:0 9px 6px;">${s2.note}</div>`).join('');
+
+  // ─ السيناريوهات
+  const sc = d.scenarios;
+  $('scenD').innerHTML = `
+    <div class="scen-item bull">
+      <div class="si-hdr">
+        <span>📈</span>
+        <span class="si-name" style="color:var(--bull)">السيناريو الصاعد</span>
+        <span class="si-prob sp-${sc.bullish.probability>50?'h':'m'}">${sc.bullish.probability}%</span>
+      </div>
+      <p class="si-txt">
+        <strong>⚡ المحفز:</strong> ${sc.bullish.trigger}<br>
+        <strong>🎯 الهدف:</strong> ${sc.bullish.target}<br><br>
+        ${sc.bullish.description}
+      </p>
+    </div>
+    <div class="scen-item bear">
+      <div class="si-hdr">
+        <span>📉</span>
+        <span class="si-name" style="color:var(--bear)">السيناريو الهابط</span>
+        <span class="si-prob sp-${sc.bearish.probability>40?'m':'l'}">${sc.bearish.probability}%</span>
+      </div>
+      <p class="si-txt">
+        <strong>⚡ المحفز:</strong> ${sc.bearish.trigger}<br>
+        <strong>🎯 الهدف:</strong> ${sc.bearish.target}<br><br>
+        ${sc.bearish.description}
+      </p>
+    </div>
+    <div class="scen-item alt">
+      <div class="si-hdr">
+        <span>↔️</span>
+        <span class="si-name" style="color:var(--blue)">السيناريو البديل</span>
+        <span class="si-prob sp-l">${sc.neutral.probability}%</span>
+      </div>
+      <p class="si-txt">
+        <strong>⚡ المحفز:</strong> ${sc.neutral.trigger}<br>
+        <strong>🎯 النطاق:</strong> ${sc.neutral.target}<br><br>
+        ${sc.neutral.description}
+      </p>
+    </div>
+    <div style="margin-top:12px;background:var(--bg3);border-radius:7px;padding:10px 13px;
+      font-size:10px;color:var(--dim);border-right:2px solid var(--gold);">
+      ⏰ <strong style="color:var(--gold)">أفضل وقت للدخول:</strong> ${d.best_entry_time}
+    </div>`;
+
+  // ─ الجلسات
+  renderSessions();
+
+  // ─ الشريط والبانر
+  const dirAr = rec.action==='BUY'?'شراء': rec.action==='SELL'?'بيع':'انتظار';
+  h('stxt',
+    `✅ تحليل مكتمل | ${price.toFixed(2)}$ | التوصية: ${dirAr} (${rec.strength}) ` +
+    `| D1: ${d.bias.D1.direction} | H4: ${d.bias.H4.direction} | الثقة: ${rec.confidence}%`
+  );
+  $('dot').className='dot g';
+  h('aib',
+    `✅ <strong>Claude AI</strong> حلّل سعر ${price.toFixed(2)}$ — ` +
+    `${new Date().toLocaleTimeString('ar')} | ` +
+    `أدخل سعراً جديداً واضغط تحليل للتحديث`
+  );
+
+  // ─ إظهار الأقسام
+  $('sRec').classList.remove('hidden');
+  ['sCtx','sBias','sTrade','sKL','sSess','sScen'].forEach(id => $(id).classList.remove('hidden'));
+  $('errbox').classList.remove('show');
+  READY = true;
+}
+
+// ── الجلسات ──────────────────────────────────────────────────
+function renderSessions() {
+  const hm = new Date().getUTCHours()*60 + new Date().getUTCMinutes();
+  function setS(cid,bid,hot,open,soon) {
+    const c=$(cid),b=$(bid);
+    c.className='card sess-card'+(hot?' hot':open?' open':'');
+    if (hot)       { b.className='sess-badge sb-hot';  b.textContent='🔥 ذروة الآن'; }
+    else if (open) { b.className='sess-badge sb-open'; b.textContent='نشطة الآن'; }
+    else if (soon) { b.className='sess-badge sb-soon'; b.textContent='⏰ قريباً'; }
+    else           { b.className='sess-badge sb-cl';   b.textContent='مغلقة'; }
+  }
+  setS('scAs','sbAs', false,             hm>=0&&hm<420,    false);
+  setS('scLo','sbLo', hm>=480&&hm<630,   hm>=630&&hm<1020, hm>=420&&hm<480);
+  setS('scNY','sbNY', hm>=780&&hm<960,   hm>=960&&hm<1320, hm>=720&&hm<780);
+}
+
+// ── التشغيل الرئيسي ──────────────────────────────────────────
+async function runAnalysis() {
+  if (PRICE <= 0) {
+    const v = parseFloat($('pinF')?.value);
+    if (v > 1000 && v < 20000) { setPrice(); }
+    else {
+      h('errmsg', 'أدخل سعر XAU/USD من MT5 ثم اضغط تأكيد أولاً');
+      $('errbox').classList.add('show');
+      $('pinF').focus();
+      return;
+    }
+  }
+
+  const price = PRICE;
+  const btn = $('btnRun'), lov = $('lov');
+  btn.disabled = true;
+  lov.classList.add('show');
+  $('errbox').classList.remove('show');
+
+  try {
+    showSteps(0); $('lovT').textContent='⚙️ تحضير التحليل...';
+    await sl(300);
+    showSteps(1); await sl(250);
+    showSteps(2); $('lovT').textContent='🤖 Claude AI يعمل...';
+    await sl(200);
+    showSteps(3);
+
+    const result = await callClaude(price);
+
+    for (let i=4;i<=8;i++) { showSteps(i); await sl(150); }
+    renderReport(result, price);
+
+  } catch(err) {
+    console.error('Error:', err);
+    let msg = err.message || 'خطأ';
+    if (msg.includes('fetch')||msg.includes('Network')) {
+      msg = 'تعذّر الاتصال بـ Claude API — تحقق من الاتصال بالإنترنت';
+    } else if (msg.includes('401')) {
+      msg = 'خطأ في مفتاح API (401) — تحقق من الإعدادات';
+    } else if (msg.includes('429')) {
+      msg = 'تجاوزت الحد (429) — انتظر دقيقة وحاول مجدداً';
+    } else if (msg.includes('JSON')) {
+      msg = 'Claude أعاد رداً غير متوقع — حاول مرة ثانية';
+    }
+    h('errmsg', msg);
+    $('errbox').classList.add('show');
+    h('stxt','⚠️ فشل التحليل — '+msg);
+    $('dot').className='dot r';
+  }
+
+  lov.classList.remove('show');
+  btn.disabled = false;
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+clock();
+setInterval(clock, 1000);
+setInterval(renderSessions, 60000);
+</script>
+</body>
+</html>
